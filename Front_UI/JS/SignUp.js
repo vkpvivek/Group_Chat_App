@@ -25,13 +25,14 @@ function onSubmit(e) {
 
         console.log(myObj);
 
-        // axios.post("http://localhost:3000/add-user",myObj)
-        //     .then((response)=>{
-        //         console.log(response.data.newUserDetails);
-        //     })
-        //     .catch((err)=>{
-        //         console.log(err);
-        //     })
+        axios.post("http://localhost:3000/add-user",myObj)
+            .then((response)=>{
+                console.log(response.data.newUserDetails);
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+
       }  
 };
 
