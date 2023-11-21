@@ -4,7 +4,7 @@ const userController=require('../controllers/user');
 const router=express.Router();
 
 
-router.post('/add-user',userController.postUser);
+router.post('/SignUp',userController.postUser);
 
 // router.post('/login',userController.userLogin);
 

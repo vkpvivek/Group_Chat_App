@@ -11,12 +11,18 @@ app.use(express.json());  //to parse JSON request bodies
 
 const userRoutes=require('./routes/user');
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors());    //put this before routes middlewarer, otherwise it will generate error
+app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(cors());
+app.use(cors({
+    origin:"*",
+    //origin:"https://localhost:3000",
+    //methods:["GET","POST"],
+    //credentials:true
+  })
+);    //put this before routes middlewarer, otherwise it will generate error
 
 
 app.use(userRoutes);
-
 
 
 app.get('/', (req, res) => {
@@ -35,3 +41,5 @@ sequelize
 app.listen(3000, () =>
      console.log('Example app is listening on port 3000.')
 );
+
+

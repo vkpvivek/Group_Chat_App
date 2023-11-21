@@ -25,9 +25,15 @@ function onSubmit(e) {
 
         console.log(myObj);
 
-        axios.post("http://localhost:3000/add-user",myObj)
+        axios.post("http://localhost:3000/SignUp",myObj)
             .then((response)=>{
-                console.log(response.data.newUserDetails);
+                if(response.data.newUserDetails){
+                    console.log(response.data.newUserDetails);
+                    alert("Signup Successful");
+                }else{
+                    console.log(response.data);
+                    alert("user already exist"); 
+                }
             })
             .catch((err)=>{
                 console.log(err);
