@@ -30,7 +30,7 @@ function onSubmit(e){
 
                     //const UserId=response.data.Uid;
                     // localStorage.setItem("Token",response.data.token);
-                    // window.location.href = "Expanse/index.html";
+                    window.location.href = "ChatApp/index.html";
                 }
             })
             .catch((err)=>{
