@@ -6,7 +6,7 @@ const router=express.Router();
 
 router.post('/SignUp',userController.postUser);
 
-// router.post('/login',userController.userLogin);
+router.post('/login', userController.userLogin);
 
 
 router.get('/home',(req,res,next)=>{
