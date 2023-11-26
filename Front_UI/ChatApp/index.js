@@ -66,6 +66,7 @@ window.addEventListener("DOMContentLoaded",()=>{
         })
 })
 
+
 function getMessage(e){
     //e.preventDefault();
 
@@ -117,6 +118,19 @@ function showChats(obj){
 
     parElem.appendChild(childElem);
 
+}
+
+
+
+//Refresh page
+window.addEventListener("DOMContentLoaded",()=>{
+    startRefreshingPage();
+})
+
+function startRefreshingPage() {
+    setInterval(() => {
+        location.reload(); // Reload the page every 1 second
+    }, 1000);
 }
 
 
