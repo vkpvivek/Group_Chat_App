@@ -29,3 +29,17 @@ exports.sendMessage= async(req,res,next)=>{
     }
 
 }
+
+
+exports.getMessage =async (req,res,next)=>{
+
+    console.log("test");
+    
+    const obj= await Message.findAll();
+    //console.log(obj);
+    console.log("Get all message");
+
+    res.status(201).json({success:true, messageDetails:obj})
+
+}
+

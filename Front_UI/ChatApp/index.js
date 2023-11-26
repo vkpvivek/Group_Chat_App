@@ -59,13 +59,33 @@ window.addEventListener("DOMContentLoaded",()=>{
                 // console.log(user);
                 showUser(response.data.newUserDetails[i]);
             }
+            getMessage();
         })
         .catch((err)=>{
             console.log(err);
         })
 })
 
+function getMessage(e){
+    //e.preventDefault();
 
+    console.log("message-test");
+    axios.get("http://localhost:3000/getMessages") 
+            .then((response)=>{
+                if(response.data.success===true){
+                    msg=response.data.messageDetails;
+                    //console.log(msg.length);
+                    for(let i=0;i<msg.length;i++){
+                        //console.log(msg[i]);
+                        showChats(msg[i]);
+                    } 
+                    
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+}
 
 function showUser(obj){
 
@@ -85,7 +105,8 @@ function showUser(obj){
 
 function showChats(obj){
 
-    console.log(obj.Sender);
+
+    //console.log(obj);
 
     const parElem=document.getElementById('ChatDetail');
     const childElem=document.createElement('li');
