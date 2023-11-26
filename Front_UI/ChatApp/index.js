@@ -5,43 +5,43 @@ const inputMsg=document.querySelector('#msg');
 messageForm.addEventListener('submit',sendMessage);
 
 
-// function sendMessage(e){
-//     e.preventDefault();
+function sendMessage(e){
+    e.preventDefault();
 
-//     console.log(inputMsg.value);
+    console.log(inputMsg.value);
 
-//     if( inputMsg.value === '') {
-//         console.log("enter all field");
-//     } 
-//     else {
+    if( inputMsg.value === '') {
+        console.log("enter all field");
+    } 
+    else {
 
-//         let myObj={
-//             msg:inputMsg.value,
-//             sender:"Vivek"
-//         };
+        let myObj={
+            msg:inputMsg.value,
+            sender:"Vivek"
+        };
 
-//         console.log(myObj.sender+": "+myObj.msg);
-
-
-//         axios.post("http://localhost:3000/sendMessage",myObj)
-//             .then((response)=>{
-
-//                 if(response.data.success===true){
-//                     console.log(response.data.message); 
-//                     //const UserId=response.data.Uid;
-//                     // localStorage.setItem("Token",response.data.token);
-//                     //window.location.href = "ChatApp/index.html";
-//                     showChats(response.data.message);  
-//                 }
-//             })
-//             .catch((err)=>{
-//                 console.log(err);
-//             })
-
-//       }  
+        console.log(myObj.sender+": "+myObj.msg);
 
 
-// }
+        axios.post("http://localhost:3000/sendMessage",myObj)
+            .then((response)=>{
+
+                if(response.data.success===true){
+                    console.log(response.data.message); 
+                    //const UserId=response.data.Uid;
+                    // localStorage.setItem("Token",response.data.token);
+                    //window.location.href = "ChatApp/index.html";
+                    showChats(response.data.message);  
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+
+      }  
+
+
+}
 
 
 window.addEventListener("DOMContentLoaded",()=>{
@@ -82,19 +82,19 @@ function showUser(obj){
 }
 
 
-// function showChats(obj){
+function showChats(obj){
 
-//     console.log(obj.Sender);
+    console.log(obj.Sender);
 
-//     const parElem=document.getElementById('ChatDetail');
-//     const childElem=document.createElement('li');
-//     childElem.className='list-group-item';
+    const parElem=document.getElementById('ChatDetail');
+    const childElem=document.createElement('li');
+    childElem.className='list-group-item';
 
-//     //childElem.textContent=" Joined the chat";
-//     childElem.textContent= obj.Sender +" ::"+obj.msg;
+    //childElem.textContent=" Joined the chat";
+    childElem.textContent= obj.Sender +" ::"+obj.msg;
 
-//     parElem.appendChild(childElem);
+    parElem.appendChild(childElem);
 
-// }
+}
 
 
