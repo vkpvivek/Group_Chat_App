@@ -72,3 +72,13 @@ exports.userLogin= async (req,result,next)=>{
     }
 
 };
+
+exports.getUsers= async (req,res,next)=>{
+
+    const obj= await User.findAll();
+    //console.log(obj);
+    console.log("Get all Users");
+
+
+    res.status(201).json({success:true, newUserDetails:obj})
+}

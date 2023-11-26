@@ -26,24 +26,41 @@
   
   
   <body>
+
+    <!-- <sidebar>
+      <header>Test</header>
+      <ul>
+        <li>A</li>
+        <li>A</li>
+        <li>A</li>
+        <li>A</li>
+        <li>A</li>
+      </ul>
+    </sidebar> -->
+    
     <nav class="navbar navbar-light bg-success">
-        <div class="container-fluid">
-          <span style="color: white;" class="navbar-brand mb-0 h1">GroupChat</span>
-        </div>
+      <div class="container-fluid">
+        <span style="color: white;" class="navbar-brand mb-0 h1">GroupChat</span>
+      </div>
     </nav>
 
+    <!-- <aside>
+      <div class="container-fluid">
+        <p>test</p>
+      </div>
+    </aside> -->
 
 
     <div class="main">
        <div class="container">
-            <ul class="list-group">
-                <li style="color: blueviolet;" class="list-group-item">You Joined</li>
+            <ul class="list-group" id="UserDetail">
+                <!-- <li style="color: blueviolet;" class="list-group-item">You Joined</li>
                 <br>
-                <li class="list-group-item">User 2 Joined</li>
-                <br>
-                <li class="list-group-item">You : Hi</li>
-                <br>
-                <li class="list-group-item">User 2: hello</li>
+                <li class="list-group-item">User 2 Joined</li> -->
+            </ul>
+            <br>
+            <ul class="list-group" id="ChatDetail">
+              <!-- <li class="list-group-item">Chat Details</li> -->
             </ul>
        </div>
     </div>
@@ -67,10 +84,10 @@
 
     <footer>
 
-        <form class="form-horizontal">
+        <form class="form-horizontal"id="messageForm">
             <div class="row">
               <div class="col-sm-10 col-xs-8">
-                <input type="text" class="form-control" id="" placeholder="Message" />
+                <input type="text" class="form-control" id="msg" placeholder="Message" />
               </div>
               <div class="col-sm-2 col-xs-4">
                 <button type="submit" class="btn btn-success btn-block">Send</button>
