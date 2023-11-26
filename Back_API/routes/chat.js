@@ -1,10 +1,12 @@
 const express=require('express');
 const chatController=require('../controllers/chatAPI');
+const userAuthentication=require('../middleware/Auth');
+
 
 const router=express.Router();
 
 
-router.post('/sendMessage',chatController.sendMessage);
+router.post('/sendMessage',userAuthentication.authenticate ,chatController.sendMessage);
 
 
 

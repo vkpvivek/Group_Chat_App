@@ -1,12 +1,14 @@
 const express = require('express');
 const Message = require('../models/message');
 // const bcrypt = require('bcrypt');
-// const jwt=require('jsonwebtoken');
+//const jwt=require('jsonwebtoken');
 
 
 exports.sendMessage= async(req,res,next)=>{
     const msg = req.body.msg;
-    const sender = req.body.sender;
+    const sender = req.user.username;
+    // const user = req.user;  //.userId;
+    // console.log(user.username);
 
     console.log(sender+":::"+msg);
     

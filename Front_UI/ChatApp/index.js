@@ -17,20 +17,21 @@ function sendMessage(e){
 
         let myObj={
             msg:inputMsg.value,
-            sender:"Vivek"
+            //sender:"Vivek"
         };
 
+        const token=localStorage.getItem('Token');
         console.log(myObj.sender+": "+myObj.msg);
 
-
-        axios.post("http://localhost:3000/sendMessage",myObj)
+       
+        axios.post("http://localhost:3000/sendMessage",myObj,{ headers :{"Authorization":token}})
             .then((response)=>{
 
                 if(response.data.success===true){
                     console.log(response.data.message); 
                     //const UserId=response.data.Uid;
                     // localStorage.setItem("Token",response.data.token);
-                    //window.location.href = "ChatApp/index.html";
+                    // window.location.href = "ChatApp/index.html";
                     showChats(response.data.message);  
                 }
             })
