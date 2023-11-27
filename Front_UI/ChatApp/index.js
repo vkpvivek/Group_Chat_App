@@ -47,25 +47,78 @@ function sendMessage(e){
 
 window.addEventListener("DOMContentLoaded",()=>{
 
+    const msgLog = JSON.parse(localStorage.getItem("msgArr") || "[]");
+    let lastID=0;
     console.log("test");
+
 
     axios.get(`http://localhost:3000/getAllUser`)
         .then((response)=>{
             // console.log(response.data.newUserDetails);
-
             for( var i=0;i<response.data.newUserDetails.length;i++){
-                //onsole.log(response.data.newUserDetails[i].username);
-                // const user=response.data.newUserDetails[i].username;
                 // console.log(user);
                 showUser(response.data.newUserDetails[i]);
             }
-            getMessage();
+        })
+        .then(()=>{
+
+            for(let i=0;i<msgLog.length;i++){
+                //console.log(msgLog[i]);
+                showChats(msgLog[i]);
+                lastID=msgLog[i].Id;
+            }
+            getBatchMessage(lastID);
+
         })
         .catch((err)=>{
             console.log(err);
         })
 })
 
+
+function getBatchMessage(lastID){
+    //e.preventDefault();
+
+    const logMessage = JSON.parse(localStorage.getItem("msgArr") || "[]");
+
+    let msgID=lastID;
+    if(msgID){
+        console.log("last msg-id :"+msgID);
+    }else{
+        msgID=-1;
+        console.log("last msg-id :"+msgID);
+    }
+    
+
+    console.log("message-test");
+
+    axios.get(`http://localhost:3000/getMessages?msgID=${msgID}`) 
+            .then((response)=>{
+                if(response.data.success===true){
+                    msg=response.data.messageDetails;
+                    //console.log(msg.length);
+                    for(let i=0;i<msg.length;i++){
+                        //console.log(msg[i]);
+                        //showChats(msg[i]);
+                        //logMessage.push({id:msg[i].Id,msg:msg[i].msg});
+
+                        if(msg[i].Id>msgID){
+                            logMessage.push(msg[i]);
+                            console.log(msg[i].Id+"..."+msgID);                         
+                        }
+
+                        console.log(logMessage[i]);
+                    } 
+
+                    console.log(logMessage);
+                    localStorage.setItem("msgArr",JSON.stringify(logMessage));
+                }
+
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+}
 
 function getMessage(e){
     //e.preventDefault();
@@ -122,15 +175,15 @@ function showChats(obj){
 
 
 
-//Refresh page
-window.addEventListener("DOMContentLoaded",()=>{
-    startRefreshingPage();
-})
+// Refresh page
+// window.addEventListener("DOMContentLoaded",()=>{
+//     startRefreshingPage();
+// })
 
-function startRefreshingPage() {
-    setInterval(() => {
-        location.reload(); // Reload the page every 1 second
-    }, 1000);
-}
+// function startRefreshingPage() {
+//     setInterval(() => {
+//         location.reload(); // Reload the page every 1 second
+//     }, 1000);
+// }
 
 
