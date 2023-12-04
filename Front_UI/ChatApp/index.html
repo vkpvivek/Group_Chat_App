@@ -7,8 +7,16 @@
     <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
     <title>Exapase Tracker</title>
     <link rel="stylesheet" href="index.css">
+
+    <!-- Add these scripts after the Bootstrap CSS link (for modal to work)-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css">
+    
     <style>
       body {background-color: rgb(237, 253, 253)}
       footer {
@@ -21,22 +29,56 @@
             color: #000;
         }
         
+        .sidebar {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px;
+            height: 100vh;
+        }
     </style>
   </head>
   
   
   <body>
 
-    <!-- <sidebar>
-      <header>Test</header>
-      <ul>
-        <li>A</li>
-        <li>A</li>
-        <li>A</li>
-        <li>A</li>
-        <li>A</li>
-      </ul>
-    </sidebar> -->
+    <!-- Modal Create-Group-->
+    <div class="modal fade" id="addGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Create New Group</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="groupForm">
+                <div class="form-group">
+                  <label for="inputGroupName">Group Name</label>
+                  <input type="email" class="form-control" id="inputGroupName" placeholder="Group Name">
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="cr-gp" >Create Group</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- //group sidebar -->
+
+    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+      <h3 class="w3-bar-item" id="groupDetails"></h3>
+      <!-- <a href="#" id="groupDetails" class="w3-bar-item w3-button">Group-1</a> -->
+      <!-- <a href="#" class="w3-bar-item w3-button">Group-2</a>-->
+      <button href="#" class="btn-primary badge-pill" data-toggle="modal" data-target="#addGroup">Create New Group</button>
+    </div>
+
     
     <nav class="navbar navbar-light bg-success">
       <div class="container-fluid">
@@ -44,42 +86,23 @@
       </div>
     </nav>
 
-    <!-- <aside>
-      <div class="container-fluid">
-        <p>test</p>
-      </div>
-    </aside> -->
 
 
-    <div class="main">
-       <div class="container">
-            <ul class="list-group" id="UserDetail">
-                <!-- <li style="color: blueviolet;" class="list-group-item">You Joined</li>
-                <br>
-                <li class="list-group-item">User 2 Joined</li> -->
-            </ul>
-            <br>
-            <ul class="list-group" id="ChatDetail">
-              <!-- <li class="list-group-item">Chat Details</li> -->
-            </ul>
-       </div>
-    </div>
-
-    
-    <!-- <div class="main">
-        <div class="container ">
-            <div class="chat-log">
-                <div class="chat-log__item">
-                <h3 class="chat-log__author">Felipe <small>14:30</small></h3>
-                <div class="chat-log__message">Yo man</div>
-                </div>
-                <div class="chat-log__item chat-log__item--own">
-                <h3 class="chat-log__author">Fabrício <small>14:30</small></h3>
-                <div class="chat-log__message">BRBdfgnsljknsfljsngslgnsrlgsgnj</div>
-                </div>
+      <div class="main">
+        <div class="container">
+              <ul class="list-group" id="UserDetail">
+                  <!-- <li style="color: blueviolet;" class="list-group-item">You Joined</li>
+                  <br>
+                  <li class="list-group-item">User 2 Joined</li> -->
+              </ul>
+              <br>
+              <ul class="list-group" id="ChatDetail">
+                <!-- <li class="list-group-item">Chat Details</li> -->
+              </ul>
         </div>
-    </div> -->
-
+      </div>
+    
+  
 
 
     <footer>
@@ -99,6 +122,8 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
     <script src="index.js"></script>
+
+
   </body>
 
 </html>

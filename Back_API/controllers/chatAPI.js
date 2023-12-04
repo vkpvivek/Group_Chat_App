@@ -32,6 +32,7 @@ exports.sendMessage= async(req,res,next)=>{
 
 
 exports.getMessage =async (req,res,next)=>{
+    //const groupID=req.query.grpId;
     const lastMsg=req.query.msgID;
 
     //const lastMsg=10;
