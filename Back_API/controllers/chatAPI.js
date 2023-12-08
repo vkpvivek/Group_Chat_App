@@ -7,8 +7,11 @@ const Message = require('../models/message');
 exports.sendMessage= async(req,res,next)=>{
     const msg = req.body.msg;
     const sender = req.user.username;
+    const groupId=req.body.groupId;
     // const user = req.user;  //.userId;
-    // console.log(user.username);
+    //console.log(user.username);
+    console.log(groupId);
+
 
     console.log(sender+":::"+msg);
     
@@ -19,7 +22,7 @@ exports.sendMessage= async(req,res,next)=>{
 
     try {
 
-        const data = await Message.create({ Sender:sender, msg });
+        const data = await Message.create({ Sender:sender, msg , groupId:groupId});
 
         res.status(201).json({success:true, message:data});
 
@@ -34,6 +37,7 @@ exports.sendMessage= async(req,res,next)=>{
 exports.getMessage =async (req,res,next)=>{
     //const groupID=req.query.grpId;
     const lastMsg=req.query.msgID;
+    const groupID=1;
 
     //const lastMsg=10;
     console.log(lastMsg);
@@ -41,7 +45,9 @@ exports.getMessage =async (req,res,next)=>{
     
     console.log("test");
     
-    const obj= await Message.findAll();
+    const obj= await Message.findAll({
+        where: { groupID: groupID },
+    });
     //console.log(obj);
 
     const data=[];

@@ -53,9 +53,11 @@ function sendMessage(e){
     } 
     else {
 
+        const grpId=localStorage.getItem('groupId');
+
         let myObj={
             msg:inputMsg.value,
-            //sender:"Vivek"
+            groupId:grpId,
         };
 
         const token=localStorage.getItem('Token');
@@ -83,21 +85,38 @@ function sendMessage(e){
 }
 
 function showGroupChat_byID(groupId){
+
+    const logMessage = [];
+
     console.log(groupId);
 
     const myObj={
         groupId:groupId,
     }
 
-    axios.get(`http://localhost:3000/Get-groupMessage`,myObj)
+    
+    axios.post(`http://localhost:3000/Get-groupMessage`,myObj)
         .then((response)=>{
-            console.log(response);
+
+            if(response.data.success===true){
+                msg=response.data.messageDetails;
+                //console.log(msg.length);
+                for(let i=0;i<msg.length;i++){
+                    console.log(msg[i]);
+                    logMessage.push(msg[i]);
+                    //showChats(msg[i]);
+                }
+                localStorage.setItem("msgArr",JSON.stringify(logMessage));
+                localStorage.setItem("groupId",groupId); 
+            }
         })
         .catch((err)=>{
             console.log(err);
         })
 
 }
+
+
 
 //Get All Group of User
 window.addEventListener("DOMContentLoaded",()=>{
@@ -138,13 +157,14 @@ window.addEventListener("DOMContentLoaded",()=>{
                 showChats(msgLog[i]);
                 lastID=msgLog[i].Id;
             }
-            getBatchMessage(lastID);
+            //getBatchMessage(lastID);   //  -->Uncomment this<--
 
         })
         .catch((err)=>{
             console.log(err);
         })
 })
+
 
 
 function getBatchMessage(lastID){

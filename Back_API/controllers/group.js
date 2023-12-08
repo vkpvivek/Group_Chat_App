@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const Group = require("../models/group");
+const Message = require('../models/message');
 const User_Group=require('../models/usergroup');
 
 
@@ -34,6 +35,8 @@ exports.makeAGroup = async (req, res, next) => {
             }
         }
 
+        console.log(members);
+      
         //map member in user & group
         const GroupUsers = await User_Group.bulkCreate(members, { returning: true })
                 
@@ -41,6 +44,7 @@ exports.makeAGroup = async (req, res, next) => {
 
                 res.status(201)
                    .json({ success: true, message: `${createGroup.name}group created` });
+                   //.json({ success: true, message: `group created` });
         });
 
     } 
@@ -121,6 +125,48 @@ exports.getGroupsMessage= async (req,res,next)=>{
   const groupId=req.body.groupId;
   console.log(groupId);
 
-  res.status(201).json({message:'testing.....'});
+  
+  const obj= await Message.findAll({
+    where: { groupID: groupId },
+  });
+
+
+  res.status(201).json({success:true, messageDetails:obj})
+  //res.status(201).json({message:'testing.....'});
+
+}
+
+
+exports.addGroupMember = async (req,res,next)=>{
+
+    const group_user=[3];
+    const groupId=1;
+
+    try {
+      console.log("===>"+"Adding Member to GP");
+
+      {
+        var members=[];
+        for(let i=0;i<group_user.length;i++){
+            var obj={
+                userId:group_user[i],
+                groupId:groupId
+            };
+            members.push(obj);
+        }
+      }
+
+      console.log(members);
+
+      const GroupUsers = await User_Group.bulkCreate(members, { returning: true })  
+          .then((result) => {
+            res.status(201)
+                .json({ success: true, message: `${members}group created` });
+      });
+
+    }
+    catch (err) {
+      console.log(err, " in Adding Group Member");
+    }
 }
 

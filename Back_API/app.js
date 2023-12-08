@@ -29,6 +29,10 @@ app.use(chatRoutes);
 app.use(groupRoutes);
 
 // Define the associations
+Group.hasMany(Message);
+Message.belongsTo(Group);
+
+
 User.belongsToMany(Group, { through: User_Group, foreignKey: 'userId' });
 Group.belongsToMany(User, { through: User_Group, foreignKey: 'groupId' });
 
