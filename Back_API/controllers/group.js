@@ -136,11 +136,32 @@ exports.getGroupsMessage= async (req,res,next)=>{
 
 }
 
+//Get All the Users in the group
+exports.getGroupsUser=async(req,res,next)=>{
+      const groupId=req.query.groupId;
+      //const groupId=1;
 
+      const result = await User_Group.findAll({
+        where: {
+            groupId: groupId
+        }
+      });
+      //console.log(result)
+      res.status(200).json({ success: false, newUserDetails:result });
+}
+
+
+//<------ADMIN------->
+
+//Add User in the Group  [done]
 exports.addGroupMember = async (req,res,next)=>{
+    const userId=req.body.userId;
+    const grpId=req.body.groupId;
 
-    const group_user=[3];
-    const groupId=1;
+    const group_user=[userId];
+    const groupId=grpId;
+    // console.log(group_user);
+    // console.log(groupId);
 
     try {
       console.log("===>"+"Adding Member to GP");
@@ -169,4 +190,75 @@ exports.addGroupMember = async (req,res,next)=>{
       console.log(err, " in Adding Group Member");
     }
 }
+
+//Remove user from Group [done]
+exports.removeMember=async (req,res,next)=>{
+  console.log("..remove-Member..");
+  const userId=req.body.userId;
+  const groupId=req.body.groupId;
+
+  // console.log(userId);
+  // console.log(groupId);
+
+    try {
+        console.log("Removing Member from Group");
+
+        // Assuming you have a model named User_Group for your association table
+        const result = await User_Group.destroy({
+            where: {
+                userId: userId,
+                groupId: groupId
+            }
+        });
+
+        if (result) {
+            res.status(200).json({ success: true, message: `User ${userId} removed from group ${groupId}` });
+        } else {
+            res.status(404).json({ success: false, message: `User ${userId} not found in group ${groupId}` });
+        }
+
+    } catch (err) {
+        console.log(err, "Error in Removing Group Member");
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+
+}
+
+//Set User as Admin--> [ongoing]
+exports.setAsAdmin=async (req,res,next)=>{
+  const userId=req.body.userId;
+  const groupId=req.body.groupId;
+  console.log("..set-Admin..");
+  // console.log(userId);
+  // console.log(groupId);
+
+    try {
+
+      console.log("Making User Admin");
+
+      // Assuming you have a model named User_Group for your association table
+      const result = await User_Group.update(
+          { isAdmin: true },
+          {
+              where: {
+                  userId: userId,
+                  groupId: groupId
+              }
+          }
+      );
+
+        if (result[0] !== 0) {
+            res.status(200).json({ success: true, message: `User ${userId} is now an admin in group ${groupId}` });
+        } else {
+            res.status(404).json({ success: false, message: `User ${userId} not found in group ${groupId}` });
+        }
+
+    }
+    catch (err) {
+        console.log(err, "Error in Making User Admin");
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+
+}
+
 

@@ -82,3 +82,38 @@ exports.getUsers= async (req,res,next)=>{
 
     res.status(201).json({success:true, newUserDetails:obj})
 }
+
+
+// get userDetails by emailId
+exports.getUsersId= async (req,res,next)=>{
+
+    const mailId=req.body.gpEmail;
+
+    const obj= await User.findAll({
+        where:{
+            email:mailId 
+        }
+    });
+    //console.log(obj);
+    //console.log(obj);
+
+    res.status(201).json({success:true, newUserDetails:obj})
+}
+
+//get user details by id
+exports.getUsersDetails= async (req,res,next)=>{
+
+    const userId=req.query.userId;
+    console.log(userId);
+    //const userId=1;
+
+    const obj= await User.findAll({
+        where:{
+            id:userId
+        }
+    });
+    //console.log(obj);
+    //console.log(obj);
+
+    res.status(201).json({success:true, newUserDetails:obj})
+}

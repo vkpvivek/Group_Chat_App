@@ -4,8 +4,8 @@ const inputMsg=document.querySelector('#msg');
 const inputGroupName=document.querySelector('#inputGroupName');
 const crgp=document.querySelector('#cr-gp');
 
-
 crgp.addEventListener('click',CreateGroup);
+
 
 function CreateGroup(e){
     e.preventDefault();
@@ -42,6 +42,7 @@ function CreateGroup(e){
 
 
 messageForm.addEventListener('submit',sendMessage);
+
 
 function sendMessage(e){
     e.preventDefault();
@@ -95,6 +96,7 @@ function showGroupChat_byID(groupId){
     }
 
     
+    
     axios.post(`http://localhost:3000/Get-groupMessage`,myObj)
         .then((response)=>{
 
@@ -108,6 +110,7 @@ function showGroupChat_byID(groupId){
                 }
                 localStorage.setItem("msgArr",JSON.stringify(logMessage));
                 localStorage.setItem("groupId",groupId); 
+                location.reload();
             }
         })
         .catch((err)=>{
@@ -115,7 +118,6 @@ function showGroupChat_byID(groupId){
         })
 
 }
-
 
 
 //Get All Group of User
@@ -134,35 +136,64 @@ window.addEventListener("DOMContentLoaded",()=>{
 })
 
 
-window.addEventListener("DOMContentLoaded",()=>{
+window.addEventListener("DOMContentLoaded",async ()=>{
 
     const msgLog = JSON.parse(localStorage.getItem("msgArr") || "[]");
     let lastID=0;
     console.log("test");
 
 
-    axios.get(`http://localhost:3000/getAllUser`)
-        .then((response)=>{
-            // console.log(response.data.newUserDetails);
-            for( var i=0;i<response.data.newUserDetails.length;i++){
-                // console.log(user);
-                //showUser(response.data.newUserDetails[i]);
-                showGroupUser(response.data.newUserDetails[i]);
-            }
-        })
-        .then(()=>{
+    //const users=[];
+    const grpId=localStorage.getItem('groupId');
+    const resp=await axios.get(`http://localhost:3000/Get-GroupsUser?groupId=${grpId}`);
 
-            for(let i=0;i<msgLog.length;i++){
-                //console.log(msgLog[i]);
-                showChats(msgLog[i]);
-                lastID=msgLog[i].Id;
-            }
-            //getBatchMessage(lastID);   //  -->Uncomment this<--
 
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
+    for( var i=0;i<resp.data.newUserDetails.length;i++){
+        //users.push(resp.data.newUserDetails[i].userId);
+        const userId=resp.data.newUserDetails[i].userId;
+        const userInfo=await axios.get(`http://localhost:3000/Get-userDetails?userId=${userId}`);
+        //users.push(userInfo.data.newUserDetails[0].username);
+        showGroupUser(userInfo.data.newUserDetails[0]);
+    }
+    //console.log(users);
+
+    
+    for(let i=0;i<msgLog.length;i++){
+        //console.log(msgLog[i]);
+        showChats(msgLog[i]);
+        lastID=msgLog[i].Id;
+    }
+    //getBatchMessage(lastID);   //  -->Uncomment this<--
+
+
+
+
+
+
+    // await axios.get(`http://localhost:3000/getAllUser`)
+    //     .then((response)=>{
+    //         // console.log(response.data.newUserDetails);
+    //         for( var i=0;i<response.data.newUserDetails.length;i++){
+    //             // console.log(user);
+    //             //console.log(response.data.newUserDetails[i]);
+    //             //showUser(response.data.newUserDetails[i]);
+    //             //showGroupUser(response.data.newUserDetails[i]);
+    //         }
+    //     })
+    //     .then(()=>{
+
+    //         // for(let i=0;i<msgLog.length;i++){
+    //         //     //console.log(msgLog[i]);
+    //         //     showChats(msgLog[i]);
+    //         //     lastID=msgLog[i].Id;
+    //         // }
+    //         //showAdminTab();
+    //         //getBatchMessage(lastID);   //  -->Uncomment this<--
+
+    //     })
+    //     .catch((err)=>{
+    //         console.log(err);
+    //     })
 })
 
 
@@ -280,6 +311,7 @@ function showChats(obj){
 
 }
 
+
 function showGroups(response){
 
     const parElem=document.getElementById('groupDetails');
@@ -298,6 +330,62 @@ function showGroups(response){
         }
 
         parElem.appendChild(childElem);
+}
+
+
+function showAdminTab(){
+
+    const parElem=document.getElementById('AdminDetail');
+    const childElem=document.createElement('li');
+    childElem.className='list-group-item';
+    // childElem.textContent= "Admin Details";
+
+    const userChild=document.createElement('input');
+    userChild.type="text";
+    userChild.id="inpUserDetail";
+    userChild.placeholder="email";
+    childElem.append(userChild);
+
+    //Remove Member from Group
+    const subChild3=document.createElement('button');
+    subChild3.className="btn btn-primary badge-pill";
+    subChild3.id="removeMember";
+    subChild3.style="float:right"
+    subChild3.textContent='Remove Member';
+    subChild3.onclick=()=>{
+       console.log("Remove Member");
+    }
+    childElem.appendChild(subChild3);
+
+
+    //Add memeber
+    const subChild=document.createElement('button');
+    subChild.className="btn btn-primary badge-pill";
+    subChild.id="addMember";
+    subChild.style="float:right";
+    // subChild.data-toggle="modal";
+    // subChild.data-target="#addGroup";
+    subChild.textContent='Add Member';
+    subChild.onclick=()=>{
+        console.log("Add Member");
+    }
+    childElem.appendChild(subChild);
+
+
+    //Add admin
+    const subChild2=document.createElement('button');
+    subChild2.className="btn btn-primary badge-pill";
+    subChild2.id="addAdmin";
+    subChild2.style="float:right"
+    subChild2.textContent='Add Admin';
+    subChild2.onclick=()=>{
+        console.log("Add Admin");
+    }
+    childElem.appendChild(subChild2);
+
+
+    parElem.appendChild(childElem);
+
 }
 
 
