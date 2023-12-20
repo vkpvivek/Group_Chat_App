@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const userAuthentication=require('../middleware/Auth');
 // const middleware = require("../../middleware/auth").authenticate;
 const groupController = require("../controllers/group");
 
@@ -9,7 +10,8 @@ router.get("/Get-groupsAllUser", groupController.getUser_Group);
 
 router.post("/createGroup", groupController.makeAGroup);
 
-router.get("/Get-allGroups", groupController.getAllGroups);
+router.get("/Get-allGroups", userAuthentication.authenticate, groupController.getAllGroups);
+//router.get("/Get-allGroups", groupController.getAllGroups);
 
 router.post('/Get-groupMessage', groupController.getGroupsMessage);
 

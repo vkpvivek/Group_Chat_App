@@ -57,7 +57,7 @@ exports.makeAGroup = async (req, res, next) => {
 
 exports.getUser_Group = async (req, res, next) => {
 
-    const userId = 1;
+    const userId = 2;
     //const userId = req.body.userId;
     console.log(userId);
 
@@ -90,9 +90,9 @@ exports.getUser_Group = async (req, res, next) => {
 
 exports.getAllGroups =async (req, res, next) =>{
     
-    console.log("------------");
-    //const userId= req.body.id;
-    const userId=1;
+    console.log("------------"+req.user.id);
+    const userId= req.user.id;
+    //const userId=2;
 
     try {
 

@@ -4,6 +4,14 @@ const sequelize=require('./util/database');
 const bodyParser=require('body-parser');
 const cors=require('cors');
 
+//-->Socket.io
+const http=require('http');
+const {Server}=require("socket.io");
+// const io=require("socket.io")(3000)
+// io.on("connection",socket=>{
+//   console.log(socket.id);
+// })
+
 
 const app = express();
 app.use(express.json());  //to parse JSON request bodies
@@ -44,6 +52,23 @@ app.get('/', (req, res) => {
   res.send('Successful response.');
 });
 
+//-->Socket.io
+const server=http.createServer(app);
+const io= new Server(server,{
+  cors:{
+    origin: '*',
+  }
+});
+
+io.on("connection",socket=>{
+  console.log("Spcket_Id:"+ socket.id);
+
+  socket.on("sendMessage",(data)=>{
+    console.log(data);
+    socket.broadcast.emit("receiveMessage",data);
+  })
+})
+
 
 sequelize
     .sync()
@@ -54,8 +79,14 @@ sequelize
     .catch(err=>console.log(err));
 
 
-app.listen(3000, () =>
-     console.log('Example app is listening on port 3000.')
+//-->Socket.io
+server.listen(3000, () =>
+    console.log('Example app is listening on port 3000.')
 );
+  
+
+// app.listen(3000, () =>
+//      console.log('Example app is listening on port 3000.')
+// );
 
 

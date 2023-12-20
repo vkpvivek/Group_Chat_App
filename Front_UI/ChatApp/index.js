@@ -1,3 +1,5 @@
+//import { io } from "socket.io-client";
+
 const messageForm=document.querySelector('#messageForm');
 //const groupForm=document.querySelector('#groupForm');
 const inputMsg=document.querySelector('#msg');
@@ -5,6 +7,29 @@ const inputGroupName=document.querySelector('#inputGroupName');
 const crgp=document.querySelector('#cr-gp');
 
 crgp.addEventListener('click',CreateGroup);
+
+
+const socket = io('http://localhost:3000');
+
+socket.on('connect', () => {
+    console.log('Connected to server');
+});
+
+
+//messageForm.addEventListener('submit',testMessage);
+
+function testMessage(e){
+    e.preventDefault();
+    //console.log(inputMsg.value);
+    socket.emit('sendMessage', { 
+        user: 'John', 
+        message: inputMsg.value
+    });
+
+    socket.on("receiveMessage",(data)=>{
+        alert(data.message);
+    })
+}
 
 
 function CreateGroup(e){
@@ -40,9 +65,7 @@ function CreateGroup(e){
       }  
 }
 
-
 messageForm.addEventListener('submit',sendMessage);
-
 
 function sendMessage(e){
     e.preventDefault();
@@ -121,9 +144,11 @@ function showGroupChat_byID(groupId){
 
 
 //Get All Group of User
-window.addEventListener("DOMContentLoaded",()=>{
+window.addEventListener("DOMContentLoaded",async ()=>{
 
-    axios.get(`http://localhost:3000/Get-allGroups`)
+    const token=localStorage.getItem('Token');
+
+    axios.get(`http://localhost:3000/Get-allGroups`,{ headers :{"Authorization":token}})
         .then((response)=>{
 
             for( var i=0;i<response.data.group_info.length;i++){
@@ -157,7 +182,7 @@ window.addEventListener("DOMContentLoaded",async ()=>{
     }
     //console.log(users);
 
-    
+
     for(let i=0;i<msgLog.length;i++){
         //console.log(msgLog[i]);
         showChats(msgLog[i]);
