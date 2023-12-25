@@ -160,20 +160,23 @@
             <footer >
                 <form class="form-horizontal" id="messageForm">
                     <div class="row">
-                        <div class="col-sm-10 col-xs-8">
+                        <!-- <div class="col-sm-2 col-xs-2"> -->
+                        <div class="col-sm-1 col-xs-2">
+                            <input type="file" class="form-control" id="myFile" name="filename">
+                            <label class="custom-file-label" for="myFile">File</label>
+                        </div>
+                        <div class="col-sm-9 col-xs-6">
                             <input type="text" class="form-control" id="msg" placeholder="Message" />
                         </div>
-                        <div class="col-sm-2 col-xs-4">
-                            <button type="submit" class="btn btn-success btn-block">Send</button>
-                        </div>
+                      <div class="col-sm-2 col-xs-4">
+                          <button type="submit" class="btn btn-success btn-block">Send</button>
+                      </div>
                     </div>
                 </form>
             </footer>
             
         </div>
     </div>
-
-   
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
     <!-- Include Socket.IO library -->

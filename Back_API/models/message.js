@@ -9,6 +9,9 @@ const Message = sequelize.define('message', {
         allowNull: false,
         primaryKey: true
     },
+    isImage:{
+        type:Sequelize.BOOLEAN
+    },
     Sender: {
         type: Sequelize.STRING
     },

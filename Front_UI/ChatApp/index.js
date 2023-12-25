@@ -3,6 +3,7 @@
 const messageForm=document.querySelector('#messageForm');
 //const groupForm=document.querySelector('#groupForm');
 const inputMsg=document.querySelector('#msg');
+const inputFile=document.querySelector('#myFile');
 const inputGroupName=document.querySelector('#inputGroupName');
 const crgp=document.querySelector('#cr-gp');
 
@@ -16,19 +17,51 @@ socket.on('connect', () => {
 });
 
 
-//messageForm.addEventListener('submit',testMessage);
+messageForm.addEventListener('submit',testMessage);
+//messageForm.addEventListener('submit',sendMessage);
 
-function testMessage(e){
+async function testMessage(e){
     e.preventDefault();
-    //console.log(inputMsg.value);
-    socket.emit('sendMessage', { 
-        user: 'John', 
-        message: inputMsg.value
-    });
 
-    socket.on("receiveMessage",(data)=>{
-        alert(data.message);
-    })
+    if(inputMsg.value){
+        sendMessage();
+    }else if(inputFile.files[0]){
+        sendImage();
+    }else{
+        alert("Enter message before send");
+    }
+
+}
+
+
+async function sendImage(e){
+    //e.preventDefault();
+    //console.log(inputFile.files[0]);
+
+    const grpId=localStorage.getItem('groupId');
+    const formData= new FormData();
+
+    formData.append("inpFile",inputFile.files[0]);
+    formData.append("groupId",grpId);
+
+    const token=localStorage.getItem('Token');
+    const SendImage=await axios.post("http://localhost:3000/sendFile",formData,{ headers :{"Authorization":token}});
+  
+    console.log(SendImage);  
+
+    if(SendImage.data.success===true){
+        console.log(SendImage.data.message); 
+        showChats(SendImage.data.message);  
+    }
+
+    // socket.emit('sendMessage', { 
+    //     user: 'John', 
+    //     message: inputMsg.value
+    // });
+    // socket.on("receiveMessage",(data)=>{
+    //     alert(data.message);
+    // })
+
 }
 
 
@@ -65,11 +98,9 @@ function CreateGroup(e){
       }  
 }
 
-messageForm.addEventListener('submit',sendMessage);
 
 function sendMessage(e){
-    e.preventDefault();
-
+    //e.preventDefault();
     console.log(inputMsg.value);
 
     if( inputMsg.value === '') {
@@ -102,11 +133,10 @@ function sendMessage(e){
             .catch((err)=>{
                 console.log(err);
             })
-
       }  
 
-
 }
+
 
 function showGroupChat_byID(groupId){
 
@@ -322,16 +352,23 @@ function showGroupUser(obj){
 
 function showChats(obj){
 
-
     //console.log(obj);
 
     const parElem=document.getElementById('ChatDetail');
     const childElem=document.createElement('li');
     childElem.className='list-group-item';
 
-    //childElem.textContent=" Joined the chat";
-    childElem.textContent= obj.Sender +" ::"+obj.msg;
-
+    if(obj.isImage){
+        childElem.textContent= obj.Sender +" ::";
+        const imgElem = document.createElement('img');
+        imgElem.src = obj.msg; // Assuming obj.msg contains the URL of the image
+        imgElem.alt = 'Image';
+        imgElem.style.width = '200px'; // Set the width as needed
+        imgElem.style.height = 'auto';// Adjust the style as needed
+        childElem.appendChild(imgElem);
+    }else{
+        childElem.textContent= obj.Sender +" ::"+obj.msg;
+    }
     parElem.appendChild(childElem);
 
 }

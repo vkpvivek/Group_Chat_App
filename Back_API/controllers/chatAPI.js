@@ -1,5 +1,7 @@
 const express = require('express');
 const Message = require('../models/message');
+// const awsServices=require('../services/awsServices');
+const awsServices=require('../services/AWS_Services');
 // const bcrypt = require('bcrypt');
 //const jwt=require('jsonwebtoken');
 
@@ -14,11 +16,7 @@ exports.sendMessage= async(req,res,next)=>{
 
 
     console.log(sender+":::"+msg);
-    
-    const obj={
-        sender:sender,
-        msg:msg
-    }
+
 
     try {
 
@@ -29,6 +27,32 @@ exports.sendMessage= async(req,res,next)=>{
     } catch (err) {
         console.error("Error:", err);
         res.status(201).json({ message: "USer Already Exist Please Login" });
+    }
+
+}
+
+
+exports.saveImage= async(req,res,next)=>{
+    const userId=req.user.id;
+    const image=req.file;
+    const groupId=req.body.groupId;
+    //console.log(groupId, image);
+    console.log("Send Image Test");
+    const fileName=`chat-image/group${groupId}/user${userId}/${Date.now()}_${image.originalname}`;
+    const imageUrl=await awsServices.uploadToS3(image.buffer,fileName);
+
+    const sender = req.user.username;
+    const msg= imageUrl;
+
+    console.log(sender+"   ::>>"+fileName);
+
+    try {
+        const data = await Message.create({ Sender:sender, msg ,isImage:1, groupId:groupId});
+        res.status(201).json({success:true, message:data});
+
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(201).json({ message: "Can't send Image" });
     }
 
 }
