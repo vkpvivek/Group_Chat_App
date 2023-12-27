@@ -27,6 +27,10 @@ const userRoutes=require('./routes/user');
 const chatRoutes=require('./routes/chat');
 const groupRoutes=require('./routes/group');
 
+// ChronJob -->
+const cronService = require('./services/Cron');
+cronService.job.start();
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
