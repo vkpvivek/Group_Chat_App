@@ -29,8 +29,8 @@ const groupRoutes=require('./routes/group');
 
 // ChronJob -->
 const cronService = require('./services/Cron');
-cronService.job.start();
-
+//cronService.job.start();
+const websocketService = require('./services/websocket');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -63,15 +63,18 @@ const io= new Server(server,{
     origin: '*',
   }
 });
+io.on('connection', websocketService );
 
-io.on("connection",socket=>{
-  console.log("Spcket_Id:"+ socket.id);
+// io.on("connection",socket=>{
+//   console.log("Spcket_Id:"+ socket.id);
 
-  socket.on("sendMessage",(data)=>{
-    console.log(data);
-    socket.broadcast.emit("receiveMessage",data);
-  })
-})
+//   socket.on("sendMessage",(data)=>{
+//     console.log(data);
+//     console.log("............................$$$....");
+//     socket.broadcast.emit("receiveMessage",data);
+//     //socket.emit("receiveMessage",data);
+//   })
+// })
 
 
 sequelize

@@ -7,9 +7,10 @@ const User_Group=require('../models/usergroup');
 
 exports.makeAGroup = async (req, res, next) => {
 
+    const userId= req.user.id;
     const group_name = req.body.gpName;
-    const group_user=[1,2];
-    const adminId=1;
+    const group_user=[userId];
+    const adminId=userId;
     //const group_members = req.body.users_ids;
 
     console.log(group_name);
@@ -152,7 +153,6 @@ exports.getGroupsUser=async(req,res,next)=>{
 
 
 //<------ADMIN------->
-
 //Add User in the Group  [done]
 exports.addGroupMember = async (req,res,next)=>{
     const userId=req.body.userId;
@@ -163,6 +163,17 @@ exports.addGroupMember = async (req,res,next)=>{
     // console.log(group_user);
     // console.log(groupId);
 
+    // const isAdmincurrentUser=await User_Group.findOne(
+    //   { where : 
+    //     { groupId: groupId, 
+    //       userId : req.user.id , 
+    //       isAdmin:1}
+    //   });
+    // console.log("isAdmin::"+isAdmincurrentUser);
+
+    // if(!isAdmincurrentUser){
+    //     res.status(404).json({message:'Only admin has this functionality'});
+    // }
     try {
       console.log("===>"+"Adding Member to GP");
 

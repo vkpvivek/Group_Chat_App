@@ -10,11 +10,17 @@ const crgp=document.querySelector('#cr-gp');
 crgp.addEventListener('click',CreateGroup);
 
 
+
 const socket = io('http://localhost:3000');
 
 socket.on('connect', () => {
     console.log('Connected to server');
 });
+
+socket.on("group-message",(groupId)=>{
+    showGroupChat_byID(groupId);
+});
+
 
 
 messageForm.addEventListener('submit',testMessage);
@@ -30,6 +36,20 @@ async function testMessage(e){
     }else{
         alert("Enter message before send");
     }
+
+    //socket.emit('send-message');
+    // console.log(inputMsg.value);
+    // socket.emit("test");
+    // socket.emit('sendMessage', { 
+    //     Sender: 'John', 
+    //     msg: inputMsg.value
+    // });
+    // socket.on("receiveMessage",(data)=>{
+    //     console.log(data.Sender+"::"+data.msg);
+    //     showChats(data);
+    // })
+    // //showChats(data);
+    // messageForm.reset();
 
 }
 
@@ -50,7 +70,8 @@ async function sendImage(e){
     console.log(SendImage);  
 
     if(SendImage.data.success===true){
-        console.log(SendImage.data.message); 
+        console.log(SendImage.data.message);
+        socket.emit('new-group-message',grpId); 
         showChats(SendImage.data.message);  
     }
 
@@ -79,7 +100,8 @@ function CreateGroup(e){
             //sender:"Vivek"
         };
 
-        axios.post("http://localhost:3000/createGroup",myObj)
+        const token=localStorage.getItem('Token');
+        axios.post("http://localhost:3000/createGroup",myObj,{ headers :{"Authorization":token}})
             .then((response)=>{
 
                 console.log("response");
@@ -118,7 +140,7 @@ function sendMessage(e){
         const token=localStorage.getItem('Token');
         console.log(myObj.sender+": "+myObj.msg);
 
-       
+        let sendmsg;
         axios.post("http://localhost:3000/sendMessage",myObj,{ headers :{"Authorization":token}})
             .then((response)=>{
 
@@ -127,12 +149,34 @@ function sendMessage(e){
                     //const UserId=response.data.Uid;
                     // localStorage.setItem("Token",response.data.token);
                     // window.location.href = "ChatApp/index.html";
+                    sendmsg=response.data.message;
+                    socket.emit('new-group-message',grpId);
                     showChats(response.data.message);  
                 }
+            })
+            .then(()=>{
+
             })
             .catch((err)=>{
                 console.log(err);
             })
+
+        
+        //socket.emit('new-group-message',grpId)
+        console.log("messge in group");
+        //showGroupChat_byID(grpId);
+        //showChats(sendmsg);
+
+        //messageForm.reset();
+        // if(grpId==0){
+        //     socket.emit('new-common-message');
+        //     console.log("common msg");
+        // }else{
+        //     socket.emit('new-group-message',grpId)
+        //     console.log("messge in group");
+        //     showGroupChat_byID(grpId);
+        // }
+
       }  
 
 }
@@ -148,8 +192,6 @@ function showGroupChat_byID(groupId){
         groupId:groupId,
     }
 
-    
-    
     axios.post(`http://localhost:3000/Get-groupMessage`,myObj)
         .then((response)=>{
 
@@ -394,7 +436,7 @@ function showGroups(response){
         parElem.appendChild(childElem);
 }
 
-
+// xxx--Not--in--Use--xxxxx
 function showAdminTab(){
 
     const parElem=document.getElementById('AdminDetail');
@@ -449,6 +491,7 @@ function showAdminTab(){
     parElem.appendChild(childElem);
 
 }
+
 
 
 

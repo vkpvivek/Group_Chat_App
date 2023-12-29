@@ -8,7 +8,7 @@ const groupController = require("../controllers/group");
 
 router.get("/Get-groupsAllUser", groupController.getUser_Group);
 
-router.post("/createGroup", groupController.makeAGroup);
+router.post("/createGroup", userAuthentication.authenticate, groupController.makeAGroup);
 
 router.get("/Get-allGroups", userAuthentication.authenticate, groupController.getAllGroups);
 //router.get("/Get-allGroups", groupController.getAllGroups);
@@ -18,6 +18,7 @@ router.post('/Get-groupMessage', groupController.getGroupsMessage);
 router.get('/Get-GroupsUser',groupController.getGroupsUser);
 
 //Admin Feature
+//router.post('/Add-GeoupMembers',  userAuthentication.authenticate, groupController.addGroupMember);
 router.post('/Add-GeoupMembers', groupController.addGroupMember);
 router.post('/Add-Admin', groupController.setAsAdmin);
 router.post('/remove-User', groupController.removeMember);
